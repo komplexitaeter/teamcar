@@ -1,0 +1,20 @@
+[
+  {
+    "id": "members_header",
+    "en": {
+      "text": "Who is part of your team?"
+    },
+    "de": {
+      "text": "Wer ist alles Teil deines Teams?"
+    }
+  },
+  {
+    "id": "member-name-input",
+    "en": {
+      "placeholder": "Add team member and press Enter"
+    },
+    "de": {
+      "placeholder": "Teammitglied hinzufügen und Enter drücken"
+    }
+  }
+]

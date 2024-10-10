@@ -2,10 +2,12 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team-as-a-Car</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles/style.css">
+    <script src="script.js"></script>
 </head>
 <body class="flex-display">
 
@@ -22,11 +24,11 @@
 
 <div class="container vertical-center">
     <!-- Überschrift -->
-    <h1 class="team-heading">Wer ist alles Teil deines Teams?</h1>
+    <h1 id="members_header" class="team-heading"></h1>
 
     <!-- Eingabefeld für Teammitglied hinzufügen -->
     <div class="input-container">
-        <input type="text" id="member-name-input" placeholder="Teammitglied hinzufügen und Enter drücken" />
+        <input type="text" id="member-name-input" placeholder="" />
     </div>
 
     <!-- Liste der Teammitglieder -->
@@ -40,7 +42,7 @@
     </button>
 
     <!-- Statisch platzierte Snackbar -->
-    <div id="snackbar" class="snackbar">Name schon vorhanden!</div>
+    <div id="snackbar" class="snackbar"></div>
 </div>
 
 <script>
@@ -48,6 +50,12 @@
     const teamMembersContainer = document.getElementById('team-members');
     const completeTeamBtn = document.getElementById('complete-team-btn');
     const snackbar = document.getElementById('snackbar');
+
+    if (getURLParameter('lang').toLowerCase() === 'en') {
+        translateElements('members', 'en');
+    } else {
+        translateElements('members', 'de');
+    }
 
     let teamMembers = [];
 
@@ -61,8 +69,7 @@
     }
 
     // Funktion zum Einblenden der Snackbar
-    function showSnackbar(message) {
-        snackbar.innerText = message;
+    function showSnackbar() {
         snackbar.classList.add('show');
 
         // Entferne die Snackbar nach 3 Sekunden
@@ -78,7 +85,7 @@
         // Überprüfe, ob das Eingabefeld leer ist oder der Name schon vorhanden ist
         if (memberName === '' || teamMembers.includes(memberName)) {
             // Zeige die Snackbar an
-            showSnackbar('Name schon vorhanden!');
+            showSnackbar();
 
             // Schüttel-Effekt hinzufügen
             memberNameInput.classList.remove('shake'); // Entferne zuerst die Klasse, um Neustart zu ermöglichen
@@ -141,12 +148,65 @@
         }
     });
 
-    // Event Listener für das "Team komplett"-Button
+    // Funktion zum Entfernen aller Teammitglieder
+    function removeAllMembers() {
+        // Leere das lokale Array
+        teamMembers = [];
+
+        // Entferne alle Mitglied-Divs aus dem DOM
+        while (teamMembersContainer.firstChild) {
+            teamMembersContainer.removeChild(teamMembersContainer.firstChild);
+        }
+
+        // Überprüfe, ob der Button deaktiviert werden soll
+        checkCompleteTeamButton();
+    }
+
+    // Funktion zum Senden der Teamdaten an den Server
+    async function sendTeamData(members) {
+        try {
+            // Erstelle das Objekt mit den Daten
+            const data = {
+                members: members,
+                lang: getURLParameter('lang') || 'en'
+            };
+
+            // Sende die Daten als JSON
+            const response = await fetch('create_team.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // JSON als Inhaltstyp festlegen
+                },
+                body: JSON.stringify(data)  // JSON-Objekt als String senden
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                // Entferne alle Mitglieder aus dem Array und dem DOM, bevor weitergeleitet wird
+                removeAllMembers();
+
+                // Weiterleitung zur base.html Seite mit der Team-ID
+                window.location.href = `base.html?t=${result.team_id}`;
+            } else {
+                console.error('Error:', result.message);
+                alert('Es gab einen Fehler beim Anlegen des Teams.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Es gab einen Fehler bei der Anfrage.');
+        }
+    }
+
+    // Event Listener for "Team komplett" button
     completeTeamBtn.addEventListener('click', () => {
         if (teamMembers.length >= 3) {
-            window.location.href = 'base.html?show_hint=1';
+            // Send the team members to the server
+            sendTeamData(teamMembers);
         }
     });
+
+
 </script>
 </body>
 </html>

@@ -6,6 +6,7 @@
     <title>Team-as-a-Car</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles/style.css">
+    <script src="script.js"></script>
 </head>
 <body class="flex-display">
 
@@ -21,33 +22,10 @@
 
 <p class="instruction_base">Wähle deinen Namen aus und ziehe ihn in den rechten Bereich.</p>
 
-
 <div class="container">
-
-
-
     <div class="left-side">
-        <div class="names names-big grab-cursor name-selection">
-            <div class="name" draggable="true">
-                <span>Paul</span>
-                <i class="fas fa-grip-lines"></i>
-            </div>
-            <div class="name no-drag">
-                <span>Anne</span>
-                <i class="fas fa-cog"></i>
-            </div>
-            <div class="name no-drag">
-                <span>Patrick</span>
-                <i class="fas fa-check"></i>
-            </div>
-            <div class="name" draggable="true">
-                <span>Hans</span>
-                <i class="fas fa-grip-lines"></i>
-            </div>
-            <div class="name" draggable="true">
-                <span>Petra</span>
-                <i class="fas fa-grip-lines"></i>
-            </div>
+        <div id="member-list" class="names names-big grab-cursor name-selection">
+            <!-- Dynamisch erstellte Mitglieder werden hier eingefügt -->
         </div>
 
         <!-- Buttons Container -->
@@ -82,12 +60,95 @@
     let draggedItem = null;
     const dropzone = document.getElementById('dropzone');
     const evaluationBtn = document.getElementById('evaluation-btn');
-    let voteCount = 0;
+    let lastJSON =null;
 
-    // Funktion, um URL-Parameter auszulesen
-    function getURLParameter(name) {
-        return new URLSearchParams(window.location.search).get(name);
+    // Funktion zum Abrufen und Aktualisieren der Mitglieder
+    async function fetchAndUpdateMembers(onLoad=false) {
+        try {
+            const teamKey = getURLParameter('t'); // Nehme den team_key aus der URL
+            const response = await fetch(`get_members.php?t=${teamKey}`);
+            const data = await response.json();
+
+            let readyCount = 0;
+
+            lastJSON = data;
+
+            if (data.status === 'success') {
+
+                if (onLoad) {
+                    if (data.language_code.toLowerCase() === 'en') {
+                        translateElements('base', 'en');
+                    } else {
+                        translateElements('base', 'de');
+                    }
+                }
+
+
+                const memberList = document.getElementById('member-list');
+                data.members.forEach(member => {
+
+                    if (member.status === 2) readyCount++;
+
+                    const memberDiv = document.getElementById(member.key);
+
+                    // Wenn das Mitglied noch nicht existiert, erstellen wir es
+                    if (!memberDiv) {
+                        createMemberDiv(member);
+                    } else {
+                        // Wenn das Mitglied existiert, prüfen wir, ob das Icon und der drag-Status korrekt sind
+                        updateMemberDiv(memberDiv, member);
+                    }
+                });
+
+                if (readyCount>=3) evaluationBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Fehler beim Abrufen der Mitglieder:', error);
+        }
     }
+
+    // Funktion zur Erstellung eines neuen Mitglied-Divs
+    function createMemberDiv(member) {
+        const memberList = document.getElementById('member-list');
+        const memberDiv = document.createElement('div');
+        memberDiv.id = member.key; // Setze die ID auf den member.key
+        memberDiv.classList.add('name');
+
+        const span = document.createElement('span');
+        span.textContent = member.name;
+
+        const icon = document.createElement('i');
+        icon.classList.add('fas');
+        memberDiv.appendChild(span);
+        memberDiv.appendChild(icon);
+
+        updateMemberDiv(memberDiv, member); // Setze den Status des Members
+
+        memberList.appendChild(memberDiv);
+    }
+
+    // Funktion zur Aktualisierung des Status eines Mitglieds
+    function updateMemberDiv(memberDiv, member) {
+        const icon = memberDiv.querySelector('i');
+
+        // Aktualisiere das Icon und den dragable Status basierend auf dem Member-Status
+        if (member.status === 0) {
+            icon.classList.remove('fa-cog', 'fa-check');
+            icon.classList.add('fa-grip-lines');
+            memberDiv.setAttribute('draggable', 'true');
+        } else if (member.status === 1) {
+            icon.classList.remove('fa-grip-lines', 'fa-check');
+            icon.classList.add('fa-cog');
+            memberDiv.setAttribute('draggable', 'false');
+        } else if (member.status === 2) {
+            icon.classList.remove('fa-grip-lines', 'fa-cog');
+            icon.classList.add('fa-check');
+            memberDiv.setAttribute('draggable', 'false');
+        }
+    }
+
+    // Starte die Aktualisierung der Mitgliederliste alle 10 Sekunden
+    setInterval(fetchAndUpdateMembers, 10000);
 
     // Entfernt einen Parameter aus der URL
     function removeURLParameter(parameter) {
@@ -126,19 +187,24 @@
     dropzone.addEventListener('drop', function(e) {
         e.preventDefault();
         if (draggedItem) {
-            const name = e.dataTransfer.getData('text');
+            const key = draggedItem.id;
             dropzone.classList.remove('dragover');
-            voteCount++;
 
-            // Aktiviert den "Zur Auswertung"-Button, wenn mindestens 3 Votes vorhanden sind
-            if (voteCount >= 3) {
-                evaluationBtn.disabled = false;
+            // Suche im lastJSON nach dem Member mit dem Key
+            const member = lastJSON.members.find(member => member.key === key);
+
+            // Überprüfen, ob das Mitglied existiert und der Status 0 ist
+            if (member && member.status === 0) {
+
+                // Weiterleitung zur neuen Seite mit dem Namen als Parameter
+                window.location.href = `assignment.html?key=${encodeURIComponent(key)}`;
+            } else {
+                // Das Drop-Event nicht verhindern (damit das Element zurückspringt)
+                draggedItem = null;  // Setze draggedItem zurück
             }
-
-            // Weiterleitung zur neuen Seite mit dem Namen als Parameter
-            window.location.href = `assignment.html?name_id=${encodeURIComponent(name)}`;
         }
     });
+
 
     // Funktion zum Kopieren der URL in die Zwischenablage ohne URL-Parameter
     function copyURL() {
@@ -176,11 +242,7 @@
             removeURLParameter('show_hint');
         }
 
-        setTimeout(() => {
-            evaluationBtn.disabled = false;
-        }, 5000);
     };
-
 
     // Event-Listener für den Finish-Button zur Weiterleitung
     evaluationBtn.addEventListener('click', function() {
@@ -188,6 +250,8 @@
             window.location.href = 'summary.html'; // Weiterleitung zur Launch-Seite
         }
     });
+
+    fetchAndUpdateMembers(true);
 
 </script>
 </body>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "members_header",
+    "en": {
+      "text": "Who is part of your team?"
+    },
+    "de": {
+      "text": "Wer ist alles Teil deines Teams?"
+    }
+  },
+  {
+    "id": "member-name-input",
+    "en": {
+      "placeholder": "Add team member and press Enter"
+    },
+    "de": {
+      "placeholder": "Teammitglied hinzufügen und Enter drücken"
+    }
+  },
+  {
+    "id": "complete-team-btn",
+    "en": {
+      "innerHTML": "Team complete<br/> (min. 3 members required)"
+    },
+    "de": {
+      "innerHTML": "Team komplett<br/> (min. 3 Mitglieder erforderlich)"
+    }
+  },
+  {
+    "id": "snackbar",
+    "en": {
+      "innerHTML": "Name already exists!"
+    },
+    "de": {
+      "innerHTML": "Name schon vorhanden!"
+    }
+  }
+]

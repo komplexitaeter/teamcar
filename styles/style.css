@@ -103,7 +103,7 @@ body {
     position: absolute;
     top: 20px;
     text-align: center;
-    width: 100%;
+    width: 90%;
 }
 
 /* Eingabefeld-Styling */
@@ -205,7 +205,7 @@ body {
     border: 2px dashed #ccc;
     border-radius: 5px;
     margin-top: 55px;
-    padding: 20px;
+    padding: 0;
     text-align: center;
     width: 100%;
     height: calc(100% - 160px);
