@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team-as-a-Car</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Ausgelagerte CSS-Datei einbinden -->
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body class="flex-display">
+<div class="container">
+    <div class="left-side">
+        <p class="instruction">Wähle deinen Namen aus und ziehe ihn in den rechten Bereich.</p>
+        <div class="names names-big grab-cursor name-selection">
+            <div class="name" draggable="true">
+                <span>Paul</span>
+                <i class="fas fa-grip-lines"></i>
+            </div>
+            <div class="name no-drag">
+                <span>Anne</span>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="name no-drag">
+                <span>Patrick</span>
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="name" draggable="true">
+                <span>Hans</span>
+                <i class="fas fa-grip-lines"></i>
+            </div>
+            <div class="name" draggable="true">
+                <span>Petra</span>
+                <i class="fas fa-grip-lines"></i>
+            </div>
+        </div>
+
+        <!-- Buttons Container -->
+        <div class="share-container">
+            <button class="share-btn" onclick="copyURL()">
+                <i class="fas fa-copy"></i>
+                Link zu dieser Seite teilen
+            </button>
+
+            <!-- Button zur Auswertung -->
+            <button id="evaluation-btn" class="evaluation-btn" disabled>
+                Zur Auswertung<br/> (min. 3 Votes notwendig)
+            </button>
+        </div>
+
+        <!-- Hinweis Sprechblase -->
+        <div id="tooltip" class="tooltip">
+            <p>Teile diese Seite mit deinem Team, damit alle loslegen können</p>
+        </div>
+    </div>
+    <div class="dropzone-container">
+        <div class="dropzone" id="dropzone">
+            <p>Das bin ich und ich will loslegen...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Snackbar für Rückmeldung -->
+<div id="snackbar" class="snackbar">Link wurde kopiert!</div>
+
+<script>
+    let draggedItem = null;
+    const dropzone = document.getElementById('dropzone');
+    const evaluationBtn = document.getElementById('evaluation-btn');
+    let voteCount = 0;
+
+    // Funktion, um URL-Parameter auszulesen
+    function getURLParameter(name) {
+        return new URLSearchParams(window.location.search).get(name);
+    }
+
+    // Entfernt einen Parameter aus der URL
+    function removeURLParameter(parameter) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete(parameter);
+        window.history.replaceState(null, '', url);
+    }
+
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.classList.contains('name') && !e.target.classList.contains('no-drag')) {
+            draggedItem = e.target;
+            e.dataTransfer.setData('text/plain', e.target.innerText);
+            e.target.style.border = '1px solid black';
+            e.target.style.opacity = '0.6';
+        }
+    });
+
+    document.addEventListener('dragend', function(e) {
+        if (e.target.classList.contains('name')) {
+            e.target.style.border = '1px solid #ccc';
+            e.target.style.opacity = '1';
+        }
+    });
+
+    dropzone.addEventListener('dragover', function(e) {
+        if (draggedItem) {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        }
+    });
+
+    dropzone.addEventListener('dragleave', function(e) {
+        dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        if (draggedItem) {
+            const name = e.dataTransfer.getData('text');
+            dropzone.classList.remove('dragover');
+            voteCount++;
+
+            // Aktiviert den "Zur Auswertung"-Button, wenn mindestens 3 Votes vorhanden sind
+            if (voteCount >= 3) {
+                evaluationBtn.disabled = false;
+            }
+
+            // Weiterleitung zur neuen Seite mit dem Namen als Parameter
+            window.location.href = `assignment.html?name_id=${encodeURIComponent(name)}`;
+        }
+    });
+
+    // Funktion zum Kopieren der URL in die Zwischenablage ohne URL-Parameter
+    function copyURL() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('show_hint'); // Entfernt den Parameter aus der kopierten URL
+        navigator.clipboard.writeText(url.href).then(() => {
+            showSnackbar();
+        }).catch(err => {
+            console.error('Fehler beim Kopieren der URL: ', err);
+        });
+    }
+
+    // Funktion zur Anzeige der Snackbar
+    function showSnackbar() {
+        const snackbar = document.getElementById('snackbar');
+        snackbar.classList.add('show');
+        setTimeout(() => {
+            snackbar.classList.remove('show');
+        }, 3000);
+    }
+
+    // Tooltip basierend auf URL-Parameter anzeigen
+    window.onload = function() {
+        const showHint = getURLParameter('show_hint');
+        if (showHint === '1') {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.classList.add('show');
+
+            // Sprechblase nach 5 Sekunden ausblenden
+            setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 5000);
+
+            // Entfernt den 'show_hint'-Parameter aus der URL
+            removeURLParameter('show_hint');
+        }
+
+        setTimeout(() => {
+            evaluationBtn.disabled = false;
+        }, 5000);
+    };
+
+
+    // Event-Listener für den Finish-Button zur Weiterleitung
+    evaluationBtn.addEventListener('click', function() {
+        if (!evaluationBtn.disabled) {
+            window.location.href = 'summary.html'; // Weiterleitung zur Launch-Seite
+        }
+    });
+
+</script>
+</body>
+</html>

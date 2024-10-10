@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team-as-a-Car</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+<p class="instruction">Auswertung der Rollen-Zuordnung im Team</p>
+
+
+<!-- Info Icon -->
+<div class="info-icon">
+    <i class="fas fa-info-circle"></i>
+</div>
+
+<!-- Info Overlay -->
+<div class="info-overlay">
+    <div class="legend-item">
+        <span class="legend-icon-clamp"></span>
+        <span>Anzahl der Nennungen</span>
+    </div>
+    <div class="legend-item">
+        <span class="legend-icon-dash"></span>
+        <span>Selbstbild</span>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <!-- Statische Namen-Liste ohne Drag & Drop -->
+    <div class="names names-small name-selection">
+        <div class="name" data-name="Paul">
+            <span>Paul</span>
+        </div>
+        <div class="name" data-name="Anne">
+            <span>Anne</span>
+            <i class="fas fa-cog"></i> <!-- Zahnrad-Symbol -->
+        </div>
+        <div class="name" data-name="Patrick">
+            <span>Patrick</span>
+            <i class="fas fa-check"></i> <!-- Haken-Symbol -->
+        </div>
+        <div class="name" data-name="Hans">
+            <span>Hans</span>
+        </div>
+        <div class="name" data-name="Petra">
+            <span>Petra</span>
+        </div>
+        <!-- Der "Zurück"-Button -->
+        <button id="backButton">Zurück</button>
+    </div>
+
+    <!-- Rollen-Zuordnungen -->
+    <div class="roles">
+        <div class="role" data-role="Rückbank">
+            <i class="fas fa-chair"></i>
+            <div class="role-header">
+                <span class="role-title">Rückbank</span>
+                <span class="role-description">Ist mit an Board</span>
+            </div>
+            <div class="assigned-names">
+                <div class="assigned-name highlighted" data-name="Paul" data-role="Rückbank">Paul (3)</div>
+                <div class="assigned-name highlighted" data-name="Hans" data-role="Rückbank">Hans (2)</div>
+            </div>
+        </div>
+        <div class="role" data-role="Motor">
+            <i class="fas fa-cogs"></i>
+            <div class="role-header">
+                <span class="role-title">Motor</span>
+                <span class="role-description">Erzeugt PS</span>
+            </div>
+            <div class="assigned-names">
+                <div class="assigned-name" data-name="Paul" data-role="Motor">Paul (3)</div>
+                <div class="assigned-name" data-name="Patrick" data-role="Motor">Patrick (1)</div>
+            </div>
+        </div>
+        <div class="role" data-role="Navi">
+            <i class="fas fa-map-signs"></i>
+            <div class="role-header">
+                <span class="role-title">Navi</span>
+                <span class="role-description">Findet den besten Weg</span>
+            </div>
+            <div class="assigned-names">
+                <div class="assigned-name highlighted" data-name="Petra" data-role="Navi">Petra (4)</div>
+            </div>
+        </div>
+        <div class="role" data-role="Lenkrad">
+            <i class="fas fa-circle-notch"></i>
+            <div class="role-header">
+                <span class="role-title">Lenkrad</span>
+                <span class="role-description">Entscheidet wo es lang geht</span>
+            </div>
+            <div class="assigned-names">
+                <div class="assigned-name" data-name="Patrick" data-role="Lenkrad">Patrick (2)</div>
+                <div class="assigned-name" data-name="Paul" data-role="Lenkrad">Paul (1)</div>
+                <div class="assigned-name" data-name="Petra" data-role="Lenkrad">Petra (1)</div>
+            </div>
+        </div>
+        <div class="role" data-role="Scheinwerfer">
+            <i class="fas fa-lightbulb"></i>
+            <div class="role-header">
+                <span class="role-title">Scheinwerfer</span>
+                <span class="role-description">Erweitert die Perspektive</span>
+            </div>
+            <div class="assigned-names"></div>
+        </div>
+        <div class="role" data-role="Bremse">
+            <i class="fas fa-hand-paper"></i>
+            <div class="role-header">
+                <span class="role-title">Bremse</span>
+                <span class="role-description">Verzögert bei Gefahren</span>
+            </div>
+            <div class="assigned-names"></div>
+        </div>
+        <div class="role" data-role="Hupe">
+            <i class="fas fa-bullhorn"></i>
+            <div class="role-header">
+                <span class="role-title">Hupe</span>
+                <span class="role-description">Kommuniziert nach außen</span>
+            </div>
+            <div class="assigned-names"></div>
+        </div>
+        <div class="role" data-role="Lunchbox">
+            <i class="fas fa-utensils"></i>
+            <div class="role-header">
+                <span class="role-title">Lunchbox</span>
+                <span class="role-description">Sorgt für Gemeinschaft</span>
+            </div>
+            <div class="assigned-names">
+                <div class="assigned-name highlighted" data-name="Anne" data-role="Lunchbox">Anne (5)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Event-Listener für den "Zurück"-Button zur Weiterleitung
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.location.href = 'base.html'; // Weiterleitung zur Launch-Seite
+    });
+
+    // Funktion zum Hervorheben aller Namenselemente
+    function highlightNameElements(name) {
+        document.querySelectorAll(`[data-name="${name}"]`).forEach(element => {
+            element.classList.add('highlight');
+        });
+    }
+
+    // Funktion zum Entfernen der Hervorhebung
+    function removeHighlight() {
+        document.querySelectorAll('.highlight').forEach(element => {
+            element.classList.remove('highlight');
+        });
+    }
+
+    // Event-Listener hinzufügen für Hover-Effekte
+    document.querySelectorAll('.name, .assigned-name').forEach(element => {
+        element.addEventListener('mouseover', function () {
+            const name = element.getAttribute('data-name');
+            highlightNameElements(name);
+        });
+
+        element.addEventListener('mouseout', function () {
+            removeHighlight();
+        });
+    });
+</script>
+</body>
+</html>

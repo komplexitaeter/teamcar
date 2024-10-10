@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team-as-a-Car</title>
+    <!-- Font Awesome CSS über CDN einbinden -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Gemeinsame CSS-Datei einbinden -->
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body class="flex-display">
+<p class="instruction">Ziehe die Namen per Drag & Drop auf die passenden Rollen.</p>
+<div class="container">
+    <div class="names grab-cursor names-small">
+        <div class="name" draggable="true">
+            Paul
+            <i class="fas fa-grip-lines"></i>
+        </div>
+        <div class="name" draggable="true">
+            Petra
+            <i class="fas fa-grip-lines"></i>
+        </div>
+        <div class="name" draggable="true">
+            Patrick
+            <i class="fas fa-grip-lines"></i>
+        </div>
+        <div class="name" draggable="true">
+            Hans
+            <i class="fas fa-grip-lines"></i>
+        </div>
+        <div class="name" draggable="true">
+            Anne
+            <i class="fas fa-grip-lines"></i>
+        </div>
+        <!-- Der "Fertig"-Button -->
+        <button id="finishButton" disabled>Fertig</button>
+    </div>
+    <div class="roles">
+        <div class="role" data-role="Rückbank">
+            <i class="fas fa-chair"></i>
+            <div class="role-header">
+                <span class="role-title">Rückbank</span>
+                <span class="role-description">Ist mit an Board</span>
+            </div>
+            <div class="assigned-names grab-cursor"></div>
+        </div>
+        <div class="role" data-role="Motor">
+            <i class="fas fa-cogs"></i>
+            <div class="role-header">
+                <span class="role-title">Motor</span>
+                <span class="role-description">Erzeugt PS</span>
+            </div>
+            <div class="assigned-names grab-cursor"></div>
+        </div>
+        <div class="role" data-role="Navi">
+            <i class="fas fa-map-signs"></i>
+            <div class="role-header">
+                <span class="role-title">Navi</span>
+                <span class="role-description">Findet den besten Weg</span>
+            </div>
+            <div class="assigned-names grab-cursor"></div>
+        </div>
+        <div class="role" data-role="Lenkrad">
+            <i class="fas fa-circle-notch"></i>
+            <div class="role-header">
+                <span class="role-title">Lenkrad</span>
+                <span class="role-description">Entscheidet wo es lang geht</span>
+            </div>
+            <div class="assigned-names grab-cursor"></div>
+        </div>
+        <div class="role" data-role="Scheinwerfer">
+            <i class="fas fa-lightbulb"></i>
+            <div class="role-header">
+                <span class="role-title">Scheinwerfer</span>
+                <span class="role-description">Erweitert die Perspektive</span>
+            </div>
+            <div class="assigned-names grab-cursor"></div>
+        </div>
+        <div class="role" data-role="Bremse">
+            <i class="fas fa-hand-paper"></i>
+            <div class="role-header">
+                <span class="role-title">Bremse</span>
+                <span class="role-description">Verzögert bei Gefahren</span>
+            </div>
+            <div class="assigned-names grab-cursor"></div>
+        </div>
+        <div class="role" data-role="Hupe">
+            <i class="fas fa-bullhorn"></i>
+            <div class="role-header">
+                <span class="role-title">Hupe</span>
+                <span class="role-description">Kommuniziert nach außen</span>
+            </div>
+            <div class="assigned-names grab-cursor"></div>
+        </div>
+        <div class="role" data-role="Lunchbox">
+            <i class="fas fa-utensils"></i>
+            <div class="role-header">
+                <span class="role-title">Lunchbox</span>
+                <span class="role-description">Sorgt für Gemeinschaft</span>
+            </div>
+            <div class="assigned-names grab-cursor"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let draggedItem = null;
+    const finishButton = document.getElementById('finishButton');
+    const names = document.querySelectorAll('.name');
+
+    function checkIfAllAssigned() {
+        const remainingNames = document.querySelectorAll('.names .name');
+        if (remainingNames.length === 0) {
+            finishButton.disabled = false;
+        }
+    }
+
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.classList.contains('name') || e.target.classList.contains('assigned-name')) {
+            draggedItem = e.target;
+            e.dataTransfer.setData('text/plain', e.target.innerText);
+            e.target.style.border = '1px solid black';
+            e.target.style.opacity = '0.6';
+        }
+    });
+
+    document.addEventListener('dragend', function(e) {
+        if (e.target.classList.contains('name') || e.target.classList.contains('assigned-name')) {
+            e.target.style.border = '1px solid #ccc';
+            e.target.style.opacity = '1';
+        }
+    });
+
+    document.addEventListener('dragover', function(e) {
+        const role = e.target.closest('.role');
+        if (role) {
+            e.preventDefault();
+            role.classList.add('dragover');
+            e.dataTransfer.dropEffect = 'move';
+        }
+    });
+
+    document.addEventListener('dragleave', function(e) {
+        const role = e.target.closest('.role');
+        if (role) {
+            role.classList.remove('dragover');
+        }
+    });
+
+    document.addEventListener('drop', function(e) {
+        const role = e.target.closest('.role');
+        if (role) {
+            e.preventDefault();
+            const name = e.dataTransfer.getData('text');
+            const assignedNamesContainer = role.querySelector('.assigned-names');
+
+            if (draggedItem) {
+                draggedItem.remove();
+            }
+
+            if (!Array.from(assignedNamesContainer.children).some(child => child.textContent === name)) {
+                const assignedName = document.createElement('div');
+                assignedName.classList.add('assigned-name');
+                assignedName.draggable = true;
+                assignedName.innerText = name;
+                assignedNamesContainer.appendChild(assignedName);
+            }
+
+            role.classList.remove('dragover');
+            checkIfAllAssigned();
+        }
+    });
+
+    // Event-Listener für den Finish-Button zur Weiterleitung
+    finishButton.addEventListener('click', function() {
+        if (!finishButton.disabled) {
+            window.location.href = 'base.html'; // Weiterleitung zur Launch-Seite
+        }
+    });
+</script>
+</body>
+</html>
