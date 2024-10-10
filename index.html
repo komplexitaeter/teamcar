@@ -8,134 +8,29 @@
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body class="flex-display">
-<div class="container vertical-center">
-    <!-- Überschrift -->
-    <h1 class="team-heading">Wer ist alles Teil deines Teams?</h1>
 
-    <!-- Eingabefeld für Teammitglied hinzufügen -->
-    <div class="input-container">
-        <input type="text" id="member-name-input" placeholder="Teammitglied hinzufügen und Enter drücken" />
+<!-- Feedback Icon -->
+<div class="feedback-icon" onclick="window.open('https://feedback.komplexitaeter.de?context=teamcar', '_blank')">
+    <i class="fas fa-heart"></i>
+</div>
+
+
+<div class="language-selection-container">
+    <!-- Kachel für Englisch -->
+    <div class="language-tile" onclick="window.location.href='members.html?lang=en'">
+        <p>My team speaks English</p>
+        <i class="fas fa-school"></i>
     </div>
 
-    <!-- Liste der Teammitglieder -->
-    <div id="team-members" class="names names-big name-selection">
-        <!-- Dynamisch hinzugefügte Teammitglieder erscheinen hier -->
+    <!-- Kachel für Deutsch -->
+    <div class="language-tile" onclick="window.location.href='members.html?lang=de'">
+        <p>Mein Team spricht Deutsch</p>
+        <i class="fas fa-road"></i>
     </div>
-
-    <!-- Button zur Bestätigung (unten zentriert) -->
-    <button id="complete-team-btn" class="evaluation-btn fixed-bottom" disabled>
-        Team komplett<br/> (min. 3 Mitglieder erforderlich)
-    </button>
-
-    <!-- Statisch platzierte Snackbar -->
-    <div id="snackbar" class="snackbar">Name schon vorhanden!</div>
 </div>
 
 <script>
-    const memberNameInput = document.getElementById('member-name-input');
-    const teamMembersContainer = document.getElementById('team-members');
-    const completeTeamBtn = document.getElementById('complete-team-btn');
-    const snackbar = document.getElementById('snackbar');
-
-    let teamMembers = [];
-
-    // Funktion zum Überprüfen, ob der Button aktiviert werden soll
-    function checkCompleteTeamButton() {
-        if (teamMembers.length >= 3) {
-            completeTeamBtn.disabled = false;
-        } else {
-            completeTeamBtn.disabled = true;
-        }
-    }
-
-    // Funktion zum Einblenden der Snackbar
-    function showSnackbar(message) {
-        snackbar.innerText = message;
-        snackbar.classList.add('show');
-
-        // Entferne die Snackbar nach 3 Sekunden
-        setTimeout(() => {
-            snackbar.classList.remove('show');
-        }, 3000);
-    }
-
-    // Funktion zum Hinzufügen eines neuen Teammitglieds
-    function addMember() {
-        const memberName = memberNameInput.value.trim();
-
-        // Überprüfe, ob das Eingabefeld leer ist oder der Name schon vorhanden ist
-        if (memberName === '' || teamMembers.includes(memberName)) {
-            // Zeige die Snackbar an
-            showSnackbar('Name schon vorhanden!');
-
-            // Schüttel-Effekt hinzufügen
-            memberNameInput.classList.remove('shake'); // Entferne zuerst die Klasse, um Neustart zu ermöglichen
-            void memberNameInput.offsetWidth; // Forciere ein Reflow, damit die Klasse wieder hinzugefügt wird
-            memberNameInput.classList.add('shake');
-
-            // Den Fokus sicherstellen
-            memberNameInput.focus();
-
-            // Entferne die Schüttel-Klasse nach der Animation
-            setTimeout(() => {
-                memberNameInput.classList.remove('shake');
-            }, 500); // Dauer der Animation ist 0.5s
-
-            return;
-        }
-
-        // Neues Mitglied zur Liste hinzufügen
-        teamMembers.push(memberName);
-
-        // Erstelle das neue Div für das Teammitglied
-        const memberDiv = document.createElement('div');
-        memberDiv.classList.add('name');
-        memberDiv.innerHTML = `
-        <span>${memberName}</span>
-        <i class="fas fa-trash" onclick="removeMember('${memberName}')"></i>
-    `;
-
-        // Füge das neue Mitglieds-Div dem Container hinzu
-        teamMembersContainer.appendChild(memberDiv);
-
-        // Leere das Eingabefeld
-        memberNameInput.value = '';
-
-        // Überprüfe, ob der Button aktiviert werden soll
-        checkCompleteTeamButton();
-    }
-
-    // Funktion zum Entfernen eines Teammitglieds
-    function removeMember(memberName) {
-        // Entferne das Mitglied aus dem Array
-        teamMembers = teamMembers.filter(member => member !== memberName);
-
-        // Entferne das entsprechende Div
-        const memberDiv = Array.from(teamMembersContainer.children).find(
-            div => div.querySelector('span').innerText === memberName
-        );
-        if (memberDiv) {
-            memberDiv.remove();
-        }
-
-        // Überprüfe, ob der Button aktiviert werden soll
-        checkCompleteTeamButton();
-    }
-
-    // Event Listener für das Hinzufügen eines Teammitglieds bei Enter-Taste
-    memberNameInput.addEventListener('keyup', (event) => {
-        if (event.key === 'Enter') {
-            addMember();
-        }
-    });
-
-    // Event Listener für das "Team komplett"-Button
-    completeTeamBtn.addEventListener('click', () => {
-        if (teamMembers.length >= 3) {
-            // Weiterleitung zur nächsten Seite (taac_launch.html)
-            window.location.href = 'base.html?show_hint=1';
-        }
-    });
+    // Optional: JavaScript für Animationen oder Effekte (falls notwendig)
 </script>
 </body>
 </html>

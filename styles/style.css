@@ -433,11 +433,11 @@ button i,
     border: 2px dashed #1182ff;
 }
 
-/* Info Icon Styling */
+/* Verschiebe das Info-Icon und das Overlay nach links */
 .info-icon {
     position: absolute;
     top: 20px;
-    right: 20px;
+    right: 60px; /* Verschiebe nach links */
     font-size: 1.5em;
     color: #007BFF;
     cursor: pointer;
@@ -447,13 +447,23 @@ button i,
     border: 2px solid #1182ff;
     border-radius: 50%;
     padding: 5px;
+    width: 20px;  /* Feste Breite */
+    height: 20px; /* Feste Höhe */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+}
+
+.info-icon:hover i {
+    transform: scale(1.2); /* Vergrößert das Info-Icon */
 }
 
 .info-overlay {
     display: none;
     position: absolute;
-    top: 40px;
-    right: 20px;
+    top: 50px;
+    right: 80px; /* Overlay passend zum Icon verschoben */
     width: 200px;
     background-color: white;
     border: 1px solid #ccc;
@@ -475,10 +485,40 @@ button i,
     margin-bottom: 0;
 }
 
+/* Overlay sichtbar bei Hover auf Info-Icon */
 .info-icon:hover + .info-overlay,
 .info-overlay:hover {
     display: block;
 }
+
+/* Herz-Icon rechts, separat */
+.feedback-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.2em;
+    color: #ff4081;
+    cursor: pointer;
+}
+
+.feedback-icon i {
+    border: 2px solid #ff4081;
+    border-radius: 50%;
+    padding: 5px;
+    width: 20px;  /* Feste Breite */
+    height: 20px; /* Feste Höhe */
+    font-size: 0.9em; /* Herz kleiner */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Beim Hover wird nur das Herz größer, der Kreis bleibt gleich */
+.feedback-icon:hover i {
+    transform: scale(1.2); /* Vergrößert das Herz ohne den Kreis zu ändern */
+}
+
 
 /* Styling for curly brackets */
 .legend-icon-clamp {
@@ -549,4 +589,50 @@ button i,
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+
+
+
+/* Language Picker Styles */
+.language-selection-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 30px;
+}
+
+.language-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 170px;
+    height: 170px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+    text-align: center;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.language-tile:hover {
+    background-color: #e0e0e0;
+    border-color: #007BFF;
+    transform: scale(1.05);
+}
+
+.language-tile i {
+    font-size: 40px;
+    color: #777;
+    margin-top: 10px;
+}
+
+.language-tile p {
+    font-size: 1em;
+    margin: 0;
+    color: #333;
 }
