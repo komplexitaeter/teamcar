@@ -9,6 +9,11 @@
 </head>
 <body class="flex-display">
 
+<!-- Brand Icon -->
+<a href="https://komplexitaeter.de" target="_blank">
+    <img id="brand" src="src/brand.png" alt="Komplexitäter" />
+</a>
+
 <!-- Feedback Icon -->
 <div class="feedback-icon" onclick="window.open('https://feedback.komplexitaeter.de?context=teamcar', '_blank')">
     <i class="fas fa-heart"></i>
@@ -139,7 +144,6 @@
     // Event Listener für das "Team komplett"-Button
     completeTeamBtn.addEventListener('click', () => {
         if (teamMembers.length >= 3) {
-            // Weiterleitung zur nächsten Seite (taac_launch.html)
             window.location.href = 'base.html?show_hint=1';
         }
     });

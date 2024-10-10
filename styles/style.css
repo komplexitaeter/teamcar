@@ -9,6 +9,14 @@ body {
     box-sizing: border-box;
 }
 
+#brand {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    width: 170px;
+    cursor: pointer;
+}
+
 .grab-cursor {
     cursor: grab;
 }
@@ -89,6 +97,15 @@ body {
     text-align: center;
 }
 
+.instruction_base {
+    font-size: 1.2em;
+    color: #555;
+    position: absolute;
+    top: 20px;
+    text-align: center;
+    width: 100%;
+}
+
 /* Eingabefeld-Styling */
 .input-container {
     width: 100%;
@@ -167,6 +184,12 @@ body {
 .name.no-drag:hover {
     box-shadow: none;
     transform: none;
+}
+
+
+.left-side {
+    width: 50%;
+    margin-top: 40px    ;
 }
 
 /* Dropzone */
