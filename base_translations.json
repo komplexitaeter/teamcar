@@ -1,20 +1,56 @@
 [
   {
-    "id": "members_header",
+    "id": "instruction",
     "en": {
-      "text": "Who is part of your team?"
+      "text": "Pick your name and drag it to the zone on the right."
     },
     "de": {
-      "text": "Wer ist alles Teil deines Teams?"
+      "text": "Wähle deinen Namen aus und ziehe ihn in den rechten Bereich."
     }
   },
   {
-    "id": "member-name-input",
+    "id": "evaluation-btn",
     "en": {
-      "placeholder": "Add team member and press Enter"
+      "innerHTML": "Show results<br/> (min. 3 votes required)"
     },
     "de": {
-      "placeholder": "Teammitglied hinzufügen und Enter drücken"
+      "innerHTML": "Zur Auswertung<br/> (min. 3 Votes notwendig)"
+    }
+  },
+  {
+    "id": "share-btn-txt",
+    "en": {
+      "text": "Share link to this page"
+    },
+    "de": {
+      "text": "Link zu dieser Seite teilen"
+    }
+  },
+  {
+    "id": "share-hint",
+    "en": {
+      "text": "Share this page with your team so everyone can get started"
+    },
+    "de": {
+      "text": "Teile diese Seite mit deinem Team, damit alle loslegen können"
+    }
+  },
+  {
+    "id": "dropzone-txt",
+    "en": {
+      "text": "That's me and I want to get started..."
+    },
+    "de": {
+      "text": "Das bin ich und ich will loslegen..."
+    }
+  },
+  {
+    "id": "snackbar",
+    "en": {
+      "text": "Link has been copied!"
+    },
+    "de": {
+      "text": "Link wurde kopiert!"
     }
   }
 ]

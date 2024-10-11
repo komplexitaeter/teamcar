@@ -45,7 +45,8 @@ try {
                 ELSE 0
             END AS status
         FROM member_tbl 
-        WHERE team_id = (SELECT id FROM team_tbl WHERE `key` = ?)
+        WHERE team_id = (SELECT id FROM team_tbl WHERE `key` = ?
+                ) ORDER BY name
     ");
     $stmt->bind_param('s', $t);
     $stmt->execute();

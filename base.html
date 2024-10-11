@@ -20,7 +20,7 @@
     <i class="fas fa-heart"></i>
 </div>
 
-<p class="instruction_base">Wähle deinen Namen aus und ziehe ihn in den rechten Bereich.</p>
+<p id="instruction" class="instruction_base"></p>
 
 <div class="container">
     <div class="left-side">
@@ -32,40 +32,39 @@
         <div class="share-container">
             <button class="share-btn" onclick="copyURL()">
                 <i class="fas fa-copy"></i>
-                Link zu dieser Seite teilen
+                <span id="share-btn-txt"></span>
             </button>
 
             <!-- Button zur Auswertung -->
             <button id="evaluation-btn" class="evaluation-btn" disabled>
-                Zur Auswertung<br/> (min. 3 Votes notwendig)
             </button>
         </div>
 
         <!-- Hinweis Sprechblase -->
         <div id="tooltip" class="tooltip">
-            <p>Teile diese Seite mit deinem Team, damit alle loslegen können</p>
+            <p id="share-hint"></p>
         </div>
     </div>
     <div class="dropzone-container">
         <div class="dropzone" id="dropzone">
-            <p>Das bin ich und ich will loslegen...</p>
+            <p id="dropzone-txt"></p>
         </div>
     </div>
 </div>
 
 <!-- Snackbar für Rückmeldung -->
-<div id="snackbar" class="snackbar">Link wurde kopiert!</div>
+<div id="snackbar" class="snackbar"></div>
 
 <script>
     let draggedItem = null;
     const dropzone = document.getElementById('dropzone');
     const evaluationBtn = document.getElementById('evaluation-btn');
     let lastJSON =null;
+    const teamKey = getURLParameter('t'); // Nehme den team_key aus der URL
 
     // Funktion zum Abrufen und Aktualisieren der Mitglieder
     async function fetchAndUpdateMembers(onLoad=false) {
         try {
-            const teamKey = getURLParameter('t'); // Nehme den team_key aus der URL
             const response = await fetch(`get_members.php?t=${teamKey}`);
             const data = await response.json();
 
@@ -136,19 +135,22 @@
             icon.classList.remove('fa-cog', 'fa-check');
             icon.classList.add('fa-grip-lines');
             memberDiv.setAttribute('draggable', 'true');
+            memberDiv.classList.remove('no-drag');
         } else if (member.status === 1) {
             icon.classList.remove('fa-grip-lines', 'fa-check');
             icon.classList.add('fa-cog');
             memberDiv.setAttribute('draggable', 'false');
+            memberDiv.classList.add('no-drag');
         } else if (member.status === 2) {
             icon.classList.remove('fa-grip-lines', 'fa-cog');
             icon.classList.add('fa-check');
             memberDiv.setAttribute('draggable', 'false');
+            memberDiv.classList.add('no-drag');
         }
     }
 
     // Starte die Aktualisierung der Mitgliederliste alle 10 Sekunden
-    setInterval(fetchAndUpdateMembers, 10000);
+    setInterval(fetchAndUpdateMembers, 2000);
 
     // Entfernt einen Parameter aus der URL
     function removeURLParameter(parameter) {
@@ -197,14 +199,13 @@
             if (member && member.status === 0) {
 
                 // Weiterleitung zur neuen Seite mit dem Namen als Parameter
-                window.location.href = `assignment.html?key=${encodeURIComponent(key)}`;
+                window.location.href = `assignment.html?t=${teamKey}&key=${encodeURIComponent(key)}`;
             } else {
                 // Das Drop-Event nicht verhindern (damit das Element zurückspringt)
                 draggedItem = null;  // Setze draggedItem zurück
             }
         }
     });
-
 
     // Funktion zum Kopieren der URL in die Zwischenablage ohne URL-Parameter
     function copyURL() {
