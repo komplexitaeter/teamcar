@@ -83,7 +83,6 @@
                 }
 
 
-                const memberList = document.getElementById('member-list');
                 data.members.forEach(member => {
 
                     if (member.status === 2) readyCount++;
@@ -130,7 +129,6 @@
     function updateMemberDiv(memberDiv, member) {
         const icon = memberDiv.querySelector('i');
 
-        // Aktualisiere das Icon und den dragable Status basierend auf dem Member-Status
         if (member.status === 0) {
             icon.classList.remove('fa-cog', 'fa-check');
             icon.classList.add('fa-grip-lines');
@@ -182,7 +180,7 @@
         }
     });
 
-    dropzone.addEventListener('dragleave', function(e) {
+    dropzone.addEventListener('dragleave', function() {
         dropzone.classList.remove('dragover');
     });
 

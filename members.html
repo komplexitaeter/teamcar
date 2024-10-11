@@ -28,7 +28,7 @@
 
     <!-- Eingabefeld für Teammitglied hinzufügen -->
     <div class="input-container">
-        <input type="text" id="member-name-input" placeholder="" />
+        <label for="member-name-input"></label><input type="text" id="member-name-input" placeholder="" />
     </div>
 
     <!-- Liste der Teammitglieder -->
@@ -61,11 +61,7 @@
 
     // Funktion zum Überprüfen, ob der Button aktiviert werden soll
     function checkCompleteTeamButton() {
-        if (teamMembers.length >= 3) {
-            completeTeamBtn.disabled = false;
-        } else {
-            completeTeamBtn.disabled = true;
-        }
+        completeTeamBtn.disabled = teamMembers.length < 3;
     }
 
     // Funktion zum Einblenden der Snackbar
