@@ -124,5 +124,14 @@
     "de": {
       "text": "Zur Startseite"
     }
+  },
+  {
+    "id": "overlay-message",
+    "en": {
+      "text": "The results are displayed as soon as at least 3 team members have finished."
+    },
+    "de": {
+      "text": "Die Auswertung wird angezeigt, sobald mindestens 3 Teammitglieder fertig sind."
+    }
   }
 ]
