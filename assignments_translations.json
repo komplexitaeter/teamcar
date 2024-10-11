@@ -9,6 +9,15 @@
     }
   },
   {
+    "id": "summary-instruction",
+    "en": {
+      "text": "Summary of role assignments in the team"
+    },
+    "de": {
+      "text": "Auswertung der Rollen-Zuordnung im Team"
+    }
+  },
+  {
     "id": "finishButton",
     "en": {
       "text": "Done"
@@ -20,73 +29,100 @@
   {
     "id": "title-backseat",
     "en": {
-      "innerHTML": "Back Seat"
+      "text": "Back Seat"
     },
     "de": {
-      "innerHTML": "Rückbank"
+      "text": "Rückbank"
     }
   },
   {
     "id": "title-engine",
     "en": {
-      "innerHTML": "Engine"
+      "text": "Engine"
     },
     "de": {
-      "innerHTML": "Motor"
+      "text": "Motor"
     }
   },
   {
     "id": "title-nav",
     "en": {
-      "innerHTML": "Navigation System"
+      "text": "Navigation System"
     },
     "de": {
-      "innerHTML": "Navi"
+      "text": "Navi"
     }
   },
   {
     "id": "title-steering-wheel",
     "en": {
-      "innerHTML": "Steering Wheel"
+      "text": "Steering Wheel"
     },
     "de": {
-      "innerHTML": "Lenkrad"
+      "text": "Lenkrad"
     }
   },
   {
     "id": "title-headlights",
     "en": {
-      "innerHTML": "Headlights"
+      "text": "Headlights"
     },
     "de": {
-      "innerHTML": "Scheinwerfer"
+      "text": "Scheinwerfer"
     }
   },
   {
     "id": "title-break",
     "en": {
-      "innerHTML": "Break"
+      "text": "Break"
     },
     "de": {
-      "innerHTML": "Bremse"
+      "text": "Bremse"
     }
   },
   {
     "id": "title-horn",
     "en": {
-      "innerHTML": "Horn"
+      "text": "Horn"
     },
     "de": {
-      "innerHTML": "Hupe"
+      "text": "Hupe"
     }
   },
   {
     "id": "title-lunchbox",
     "en": {
-      "innerHTML": "Lunchbox"
+      "text": "Lunchbox"
     },
     "de": {
-      "innerHTML": "Lunchbox"
+      "text": "Lunchbox"
+    }
+  },
+  {
+    "id": "legend-clamp",
+    "en": {
+      "text": "Number of mentions"
+    },
+    "de": {
+      "text": "Anzahl der Nennungen"
+    }
+  },
+  {
+    "id": "legend-dash-line",
+    "en": {
+      "text": "Self-perception"
+    },
+    "de": {
+      "text": "Selbstbild"
+    }
+  },
+  {
+    "id": "backButton",
+    "en": {
+      "text": "To start page"
+    },
+    "de": {
+      "text": "Zur Startseite"
     }
   }
 ]

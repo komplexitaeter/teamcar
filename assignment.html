@@ -99,6 +99,9 @@
 <script>
     let draggedItem = null;
     const finishButton = document.getElementById('finishButton');
+    const urlParams = new URLSearchParams(window.location.search);
+    const teamKey = urlParams.get('t');
+    const fromKey = urlParams.get('key');
 
     const memberKey = new URLSearchParams(window.location.search).get('key');  // Hol den 'key' aus der URL
 
@@ -248,9 +251,6 @@
 
 
     function generateAssignmentJSON() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const teamKey = urlParams.get('t');
-        const fromKey = urlParams.get('key');
 
         // Alle assigned-names Container finden
         const assignedNamesContainers = document.querySelectorAll('.assigned-names');
@@ -297,7 +297,7 @@
 
             if (result.status === 'success') {
                 // Weiterleitung zur summary.html nach erfolgreicher API-Anfrage
-                window.location.href = 'summary.html';
+                window.location.href = 'summary.html?t='+teamKey;
             } else {
                 // Fehlerbehandlung bei Fehler im Server-Response
                 console.error('Fehler beim Erstellen der Assignments:', result.message);

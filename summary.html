@@ -6,9 +6,10 @@
     <title>Team-as-a-Car</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles/style.css">
+    <script src="script.js"></script>
 </head>
 <body>
-<p class="instruction">Auswertung der Rollen-Zuordnung im Team</p>
+<p id="summary-instruction" class="instruction"></p>
 
 <!-- Brand Icon -->
 <a href="https://komplexitaeter.de" target="_blank">
@@ -30,11 +31,11 @@
 <div class="info-overlay">
     <div class="legend-item">
         <span class="legend-icon-clamp"></span>
-        <span>Anzahl der Nennungen</span>
+        <span id="legend-clamp"></span>
     </div>
     <div class="legend-item">
         <span class="legend-icon-dash"></span>
-        <span>Selbstbild</span>
+        <span id="legend-dash-line"></span>
     </div>
 </div>
 
@@ -53,116 +54,235 @@
 
 
     <!-- Statische Namen-Liste ohne Drag & Drop -->
-    <div class="names names-small name-selection">
-        <div class="name" data-name="Paul">
-            <span>Paul</span>
-        </div>
-        <div class="name" data-name="Anne">
-            <span>Anne</span>
-            <i class="fas fa-cog"></i> <!-- Zahnrad-Symbol -->
-        </div>
-        <div class="name" data-name="Patrick">
-            <span>Patrick</span>
-            <i class="fas fa-check"></i> <!-- Haken-Symbol -->
-        </div>
-        <div class="name" data-name="Hans">
-            <span>Hans</span>
-        </div>
-        <div class="name" data-name="Petra">
-            <span>Petra</span>
-        </div>
+    <div id="names-available" class="names names-small name-selection">
+        <! Dynamic Content comes here -->
+
         <!-- Der "Zurück"-Button -->
         <button id="backButton">Zurück</button>
     </div>
 
     <!-- Rollen-Zuordnungen -->
     <div class="roles">
-        <div class="role" data-role="Rückbank">
+        <!-- Rollenliste -->
+        <div class="role">
             <i class="fas fa-chair"></i>
             <div class="role-header">
-                <span class="role-title">Rückbank</span>
-                <span class="role-description">Ist mit an Board</span>
+                <span id="title-backseat" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names">
-                <div class="assigned-name highlighted" data-name="Paul" data-role="Rückbank">Paul (3)</div>
-                <div class="assigned-name highlighted" data-name="Hans" data-role="Rückbank">Hans (2)</div>
-            </div>
+            <div data-role-key="BACKSEAT" class="assigned-names"></div>
         </div>
-        <div class="role" data-role="Motor">
+        <div class="role">
             <i class="fas fa-cogs"></i>
             <div class="role-header">
-                <span class="role-title">Motor</span>
-                <span class="role-description">Erzeugt PS</span>
+                <span id="title-engine" class="role-title">Motor</span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names">
-                <div class="assigned-name" data-name="Paul" data-role="Motor">Paul (3)</div>
-                <div class="assigned-name" data-name="Patrick" data-role="Motor">Patrick (1)</div>
-            </div>
+            <div data-role-key="ENGINE" class="assigned-names"></div>
         </div>
-        <div class="role" data-role="Navi">
+        <div class="role">
             <i class="fas fa-map-signs"></i>
             <div class="role-header">
-                <span class="role-title">Navi</span>
-                <span class="role-description">Findet den besten Weg</span>
+                <span id="title-nav" class="role-title">Navi</span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names">
-                <div class="assigned-name highlighted" data-name="Petra" data-role="Navi">Petra (4)</div>
-            </div>
+            <div data-role-key="NAV" class="assigned-names"></div>
         </div>
-        <div class="role" data-role="Lenkrad">
+        <div class="role">
             <i class="fas fa-circle-notch"></i>
             <div class="role-header">
-                <span class="role-title">Lenkrad</span>
-                <span class="role-description">Entscheidet wo es lang geht</span>
+                <span id="title-steering-wheel" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names">
-                <div class="assigned-name" data-name="Patrick" data-role="Lenkrad">Patrick (2)</div>
-                <div class="assigned-name" data-name="Paul" data-role="Lenkrad">Paul (1)</div>
-                <div class="assigned-name" data-name="Petra" data-role="Lenkrad">Petra (1)</div>
-            </div>
+            <div data-role-key="STEERING-WHEEL" class="assigned-names"></div>
         </div>
-        <div class="role" data-role="Scheinwerfer">
+        <div class="role">
             <i class="fas fa-lightbulb"></i>
             <div class="role-header">
-                <span class="role-title">Scheinwerfer</span>
-                <span class="role-description">Erweitert die Perspektive</span>
+                <span id="title-headlights" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names"></div>
+            <div data-role-key="HEADLIGHTS" class="assigned-names"></div>
         </div>
-        <div class="role" data-role="Bremse">
+        <div class="role">
             <i class="fas fa-hand-paper"></i>
             <div class="role-header">
-                <span class="role-title">Bremse</span>
-                <span class="role-description">Verzögert bei Gefahren</span>
+                <span id="title-break" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names"></div>
+            <div data-role-key="BREAK" class="assigned-names"></div>
         </div>
-        <div class="role" data-role="Hupe">
+        <div class="role">
             <i class="fas fa-bullhorn"></i>
             <div class="role-header">
-                <span class="role-title">Hupe</span>
-                <span class="role-description">Kommuniziert nach außen</span>
+                <span id="title-horn" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names"></div>
+            <div data-role-key="HORN" class="assigned-names"></div>
         </div>
-        <div class="role" data-role="Lunchbox">
+        <div class="role">
             <i class="fas fa-utensils"></i>
             <div class="role-header">
-                <span class="role-title">Lunchbox</span>
-                <span class="role-description">Sorgt für Gemeinschaft</span>
+                <span id="title-lunchbox" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names">
-                <div class="assigned-name highlighted" data-name="Anne" data-role="Lunchbox">Anne (5)</div>
-            </div>
+            <div data-role-key="LUNCHBOX" class="assigned-names"></div>
         </div>
     </div>
 </div>
 
+
+
+
+
+
+
+
 <script>
-    // Event-Listener für den "Zurück"-Button zur Weiterleitung
-    document.getElementById('backButton').addEventListener('click', function() {
-        window.location.href = 'base.html'; // Weiterleitung zur Launch-Seite
-    });
+
+    const teamKey = new URLSearchParams(window.location.search).get('t');
+    const namesAvailableDiv = document.getElementById('names-available');
+
+    // Funktion zum Hinzufügen der Hover-Effekte
+    function addHoverEvents(element) {
+        element.addEventListener('mouseover', function () {
+            const name = element.getAttribute('data-name');
+            highlightNameElements(name);
+        });
+
+        element.addEventListener('mouseout', function () {
+            removeHighlight();
+        });
+    }
+
+    async function updateAssignments() {
+        const teamKey = new URLSearchParams(window.location.search).get('t');  // Hol den Team-Key aus der URL
+
+        try {
+            const response = await fetch(`get_assignments.php?t=${teamKey}`);
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                // Entferne alle bestehenden assigned-name Divs
+                document.querySelectorAll('.assigned-name').forEach(assignedDiv => assignedDiv.remove());
+
+                // Gehe die Zuordnungen durch und füge sie den entsprechenden Rollen hinzu
+                data.assignments.forEach(assignment => {
+                    const roleDiv = document.querySelector(`[data-role-key="${assignment.role_key}"]`);
+
+                    if (roleDiv) {
+                        const memberDiv = document.createElement('div');
+                        memberDiv.classList.add('assigned-name');
+                        memberDiv.setAttribute('data-name', assignment.name);
+                        memberDiv.setAttribute('data-role', assignment.role_key);
+                        memberDiv.innerText = `${assignment.name} (${assignment.count})`;
+
+                        // Markiere, wenn das Mitglied sich selbst zugeordnet hat
+                        if (assignment.self_assigned) {
+                            memberDiv.classList.add('highlighted');
+                        }
+
+                        // Füge das neue Div in die entsprechende Rolle ein
+                        roleDiv.appendChild(memberDiv);
+
+                        // Füge den Hover-Event-Listener hinzu
+                        addHoverEvents(memberDiv);
+                    }
+                });
+            } else {
+                console.error('Fehler beim Abrufen der Zuordnungen:', data.message);
+            }
+        } catch (error) {
+            console.error('Fehler beim Abrufen der Zuordnungen:', error);
+        }
+    }
+
+    // Fetch members and dynamically create the name divs
+    async function fetchAndUpdateMembers(onLoad = false) {
+        try {
+            const response = await fetch(`get_members.php?t=${teamKey}`);
+            const data = await response.json();
+            let gotReadyCnt = 0;
+            let readyCnt = 0;
+
+            if (data.status === 'success') {
+                // Setze Sprache basierend auf dem JSON
+                if (onLoad) {
+                    if (data.language_code.toLowerCase() === 'en') {
+                        translateElements('assignments', 'en');
+                    } else {
+                        translateElements('assignments', 'de');
+                    }
+                }
+
+                // Dynamisch die Namens-Divs erstellen oder aktualisieren
+                data.members.forEach(member => {
+                    let memberDiv = document.querySelector(`div[data-name="${member.name}"]`);
+                    if (!memberDiv) {
+                        // Neues Div anlegen, falls noch nicht vorhanden
+                        memberDiv = document.createElement('div');
+                        memberDiv.classList.add('name');
+                        memberDiv.setAttribute('data-name', member.name);
+                        memberDiv.innerHTML = `
+                        <span>${member.name}</span>
+                        <i class="fas"></i> <!-- Icon wird dynamisch gesetzt -->
+                    `;
+                        memberDiv.setAttribute('data-name', member.name);
+                        namesAvailableDiv.insertBefore(memberDiv, document.getElementById('backButton'));
+
+                        // Füge den Hover-Event-Listener hinzu
+                        addHoverEvents(memberDiv);
+                    }
+                    if (member.status === 2) readyCnt++;
+                    gotReadyCnt += updateMemberStatus(memberDiv, member.status);
+                });
+
+                if (readyCnt >= 3) {
+                    document.getElementById('overlay').style.display = 'none';
+
+                    if (gotReadyCnt > 0) await updateAssignments();
+                }
+            }
+        } catch (error) {
+            console.error('Fehler beim Abrufen der Mitglieder:', error);
+        }
+    }
+
+    // Funktion zur Aktualisierung des Status eines Mitglieds
+    function updateMemberStatus(memberDiv, status) {
+        const icon = memberDiv.querySelector('i');
+        let gotReady = 0;
+
+        if (status === 0) {
+            icon.classList.remove('fa-cog', 'fa-check');
+        } else if (status === 1) {
+            if (!icon.classList.contains('fa-cog')) {
+                icon.classList.add('fa-cog');
+            }
+            icon.classList.remove('fa-grip-lines', 'fa-check');
+        } else if (status === 2) {
+            if (!icon.classList.contains('fa-check')) {
+                icon.classList.add('fa-check');
+                gotReady = 1;
+            }
+            icon.classList.remove('fa-grip-lines', 'fa-cog');
+        }
+
+        return gotReady;
+    }
+
+    // Starte die Aktualisierung der Mitglieder alle 2 Sekunden
+    setInterval(fetchAndUpdateMembers, 2000);
+
+    // Initial page load
+    window.onload = function() {
+        fetchAndUpdateMembers(true);
+
+        // Event-Listener für den "Zurück"-Button zur Weiterleitung
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = 'base.html?t=' + teamKey;
+        });
+    };
 
     // Funktion zum Hervorheben aller Namenselemente
     function highlightNameElements(name) {
@@ -178,29 +298,6 @@
         });
     }
 
-    // Event-Listener hinzufügen für Hover-Effekte
-    document.querySelectorAll('.name, .assigned-name').forEach(element => {
-        element.addEventListener('mouseover', function () {
-            const name = element.getAttribute('data-name');
-            highlightNameElements(name);
-        });
-
-        element.addEventListener('mouseout', function () {
-            removeHighlight();
-        });
-    });
-
-    // Overlay functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const overlay = document.getElementById('overlay');
-
-        setTimeout(function() {
-            overlay.style.opacity = '0';
-            setTimeout(function() {
-                overlay.style.display = 'none';
-            }, 500); // Wait for fade out animation to complete
-        }, 5000); // 5 seconds delay
-    });
 </script>
 </body>
 </html>

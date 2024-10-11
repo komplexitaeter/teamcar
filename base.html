@@ -246,7 +246,7 @@
     // Event-Listener für den Finish-Button zur Weiterleitung
     evaluationBtn.addEventListener('click', function() {
         if (!evaluationBtn.disabled) {
-            window.location.href = 'summary.html'; // Weiterleitung zur Launch-Seite
+            window.location.href = 'summary.html?t='+teamKey; // Weiterleitung zur Launch-Seite
         }
     });
 
