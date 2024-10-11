@@ -1,0 +1,92 @@
+[
+  {
+    "id": "assignment-instruction",
+    "en": {
+      "text": "Drag and drop the names onto the appropriate roles."
+    },
+    "de": {
+      "text": "Ziehe die Namen per Drag & Drop auf die passenden Rollen."
+    }
+  },
+  {
+    "id": "finishButton",
+    "en": {
+      "text": "Done"
+    },
+    "de": {
+      "text": "Fertig"
+    }
+  },
+  {
+    "id": "title-backseat",
+    "en": {
+      "innerHTML": "Back Seat"
+    },
+    "de": {
+      "innerHTML": "Rückbank"
+    }
+  },
+  {
+    "id": "title-engine",
+    "en": {
+      "innerHTML": "Engine"
+    },
+    "de": {
+      "innerHTML": "Motor"
+    }
+  },
+  {
+    "id": "title-nav",
+    "en": {
+      "innerHTML": "Navigation System"
+    },
+    "de": {
+      "innerHTML": "Navi"
+    }
+  },
+  {
+    "id": "title-steering-wheel",
+    "en": {
+      "innerHTML": "Steering Wheel"
+    },
+    "de": {
+      "innerHTML": "Lenkrad"
+    }
+  },
+  {
+    "id": "title-headlights",
+    "en": {
+      "innerHTML": "Headlights"
+    },
+    "de": {
+      "innerHTML": "Scheinwerfer"
+    }
+  },
+  {
+    "id": "title-break",
+    "en": {
+      "innerHTML": "Break"
+    },
+    "de": {
+      "innerHTML": "Bremse"
+    }
+  },
+  {
+    "id": "title-horn",
+    "en": {
+      "innerHTML": "Horn"
+    },
+    "de": {
+      "innerHTML": "Hupe"
+    }
+  },
+  {
+    "id": "title-lunchbox",
+    "en": {
+      "innerHTML": "Lunchbox"
+    },
+    "de": {
+      "innerHTML": "Lunchbox"
+    }
+  }
+]

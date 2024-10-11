@@ -6,6 +6,7 @@
     <title>Team-as-a-Car</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles/style.css">
+    <script src="script.js"></script>
 </head>
 <body class="flex-display">
 
@@ -19,97 +20,78 @@
     <i class="fas fa-heart"></i>
 </div>
 
-
-<p class="instruction">Ziehe die Namen per Drag & Drop auf die passenden Rollen.</p>
+<p id="assignment-instruction" class="instruction">Ziehe die Namen per Drag & Drop auf die passenden Rollen.</p>
 <div class="container">
-    <div class="names grab-cursor names-small">
-        <div class="name" draggable="true">
-            Paul
-            <i class="fas fa-grip-lines"></i>
-        </div>
-        <div class="name" draggable="true">
-            Petra
-            <i class="fas fa-grip-lines"></i>
-        </div>
-        <div class="name" draggable="true">
-            Patrick
-            <i class="fas fa-grip-lines"></i>
-        </div>
-        <div class="name" draggable="true">
-            Hans
-            <i class="fas fa-grip-lines"></i>
-        </div>
-        <div class="name" draggable="true">
-            Anne
-            <i class="fas fa-grip-lines"></i>
-        </div>
-        <!-- Der "Fertig"-Button -->
-        <button id="finishButton" disabled>Fertig</button>
+    <div id="names-available" class="names grab-cursor names-small">
+        <button id="finishButton" disabled></button>
+
+        <!-- Dynamisch hinzugefügte Namen erscheinen hier -->
     </div>
     <div class="roles">
-        <div class="role" data-role="Rückbank">
+        <!-- Rollenliste -->
+        <div class="role">
             <i class="fas fa-chair"></i>
             <div class="role-header">
-                <span class="role-title">Rückbank</span>
-                <span class="role-description">Ist mit an Board</span>
+                <span id="title-backseat" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names grab-cursor"></div>
+            <div data-role-key="BACKSEAT" class="assigned-names grab-cursor"></div>
         </div>
-        <div class="role" data-role="Motor">
+        <div class="role">
             <i class="fas fa-cogs"></i>
             <div class="role-header">
-                <span class="role-title">Motor</span>
-                <span class="role-description">Erzeugt PS</span>
+                <span id="title-engine" class="role-title">Motor</span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names grab-cursor"></div>
+            <div data-role-key="ENGINE" class="assigned-names grab-cursor"></div>
         </div>
-        <div class="role" data-role="Navi">
+        <div class="role">
             <i class="fas fa-map-signs"></i>
             <div class="role-header">
-                <span class="role-title">Navi</span>
-                <span class="role-description">Findet den besten Weg</span>
+                <span id="title-nav" class="role-title">Navi</span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names grab-cursor"></div>
+            <div data-role-key="NAV" class="assigned-names grab-cursor"></div>
         </div>
-        <div class="role" data-role="Lenkrad">
+        <div class="role">
             <i class="fas fa-circle-notch"></i>
             <div class="role-header">
-                <span class="role-title">Lenkrad</span>
-                <span class="role-description">Entscheidet wo es lang geht</span>
+                <span id="title-steering-wheel" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names grab-cursor"></div>
+            <div data-role-key="STEERING-WHEEL" class="assigned-names grab-cursor"></div>
         </div>
-        <div class="role" data-role="Scheinwerfer">
+        <div class="role">
             <i class="fas fa-lightbulb"></i>
             <div class="role-header">
-                <span class="role-title">Scheinwerfer</span>
-                <span class="role-description">Erweitert die Perspektive</span>
+                <span id="title-headlights" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names grab-cursor"></div>
+            <div data-role-key="HEADLIGHTS" class="assigned-names grab-cursor"></div>
         </div>
-        <div class="role" data-role="Bremse">
+        <div class="role">
             <i class="fas fa-hand-paper"></i>
             <div class="role-header">
-                <span class="role-title">Bremse</span>
-                <span class="role-description">Verzögert bei Gefahren</span>
+                <span id="title-break" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names grab-cursor"></div>
+            <div data-role-key="BREAK" class="assigned-names grab-cursor"></div>
         </div>
-        <div class="role" data-role="Hupe">
+        <div class="role">
             <i class="fas fa-bullhorn"></i>
             <div class="role-header">
-                <span class="role-title">Hupe</span>
-                <span class="role-description">Kommuniziert nach außen</span>
+                <span id="title-horn" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names grab-cursor"></div>
+            <div data-role-key="HORN" class="assigned-names grab-cursor"></div>
         </div>
-        <div class="role" data-role="Lunchbox">
+        <div class="role">
             <i class="fas fa-utensils"></i>
             <div class="role-header">
-                <span class="role-title">Lunchbox</span>
-                <span class="role-description">Sorgt für Gemeinschaft</span>
+                <span id="title-lunchbox" class="role-title"></span>
+                <span class="role-description"></span>
             </div>
-            <div class="assigned-names grab-cursor"></div>
+            <div data-role-key="LUNCHBOX" class="assigned-names grab-cursor"></div>
         </div>
     </div>
 </div>
@@ -117,15 +99,82 @@
 <script>
     let draggedItem = null;
     const finishButton = document.getElementById('finishButton');
-    const names = document.querySelectorAll('.name');
 
-    function checkIfAllAssigned() {
-        const remainingNames = document.querySelectorAll('.names .name');
-        if (remainingNames.length === 0) {
-            finishButton.disabled = false;
+    const memberKey = new URLSearchParams(window.location.search).get('key');  // Hol den 'key' aus der URL
+
+    // Funktion zum Aufruf der API
+    async function updateLastCallback(working) {
+        try {
+            const response = await fetch(`update_callback.php?key=${memberKey}&working=${working}`);
+            const data = await response.json();
+            if (data.status !== 'success') {
+                console.error('Fehler beim Aktualisieren von last_callback:', data.message);
+            }
+        } catch (error) {
+            console.error('Fehler beim Aufruf der API:', error);
         }
     }
 
+    // Periodischer API-Aufruf jede Sekunde
+    const intervalId = setInterval(() => {
+        updateLastCallback(1);  // Arbeitet, also working=1
+    }, 1000);
+
+    // Bei Verlassen der Seite
+    window.addEventListener('beforeunload', () => {
+        clearInterval(intervalId);  // Stoppe das regelmäßige Aktualisieren
+        navigator.sendBeacon(`update_callback.php?key=${memberKey}&working=0`);  // Aufruf mit working=0, um last_callback auf NULL zu setzen
+    });
+
+    // Fetch members and populate the names list
+    async function fetchMembersAndPopulate() {
+        const teamKey = new URLSearchParams(window.location.search).get('t');  // Get the team key from the URL
+        try {
+            const response = await fetch(`get_members.php?t=${teamKey}`);
+            const data = await response.json();
+
+            if (data.status === 'success') {
+                const namesAvailableDiv = document.getElementById('names-available');
+
+                if (data.language_code.toLowerCase() === 'en') {
+                    translateElements('assignments', 'en');
+                } else {
+                    translateElements('assignments', 'de');
+                }
+                data.members.forEach(member => {
+                    const memberDiv = document.createElement('div');
+                    memberDiv.classList.add('name');
+                    memberDiv.draggable = true;
+
+                    memberDiv.innerHTML = `
+                        ${member.name}
+                        <i class="fas fa-grip-lines"></i>
+                    `;
+
+                    memberDiv.setAttribute('data-key', member.key);
+
+                    namesAvailableDiv.appendChild(memberDiv);
+                });
+            } else {
+                console.error('Fehler beim Abrufen der Mitglieder:', data.message);
+            }
+        } catch (error) {
+            console.error('Fehler beim Abrufen der Mitglieder:', error);
+        }
+    }
+
+    // Initial page load: fetch members and populate names
+    window.onload = function() {
+        fetchMembersAndPopulate();
+    };
+
+    // Funktion zum Überprüfen, ob alle Namen zugeordnet wurden
+    function checkIfAllAssigned() {
+        const remainingNames = document.querySelectorAll('#names-available .name');
+        finishButton.disabled = remainingNames.length !== 0;
+    }
+
+    // Drag and Drop logic remains the same
     document.addEventListener('dragstart', function(e) {
         if (e.target.classList.contains('name') || e.target.classList.contains('assigned-name')) {
             draggedItem = e.target;
@@ -160,34 +209,107 @@
 
     document.addEventListener('drop', function(e) {
         const role = e.target.closest('.role');
+        let draggedItemKey;
+
         if (role) {
             e.preventDefault();
             const name = e.dataTransfer.getData('text');
             const assignedNamesContainer = role.querySelector('.assigned-names');
 
             if (draggedItem) {
+                // Erhalte die ID des ursprünglichen Divs, das gezogen wurde
+                draggedItemKey = draggedItem.getAttribute('data-key');
+                // Entferne das ursprüngliche Div
                 draggedItem.remove();
             }
 
+            // Wenn der Name noch nicht in der Drop-Zone ist
             if (!Array.from(assignedNamesContainer.children).some(child => child.textContent === name)) {
+                // Erstelle das neue Div
                 const assignedName = document.createElement('div');
                 assignedName.classList.add('assigned-name');
                 assignedName.draggable = true;
                 assignedName.innerText = name;
+
+                // Setze die ID des ursprünglichen Divs als data-id im neuen Div
+                assignedName.setAttribute('data-key', draggedItemKey);
+
+                // Füge das neue Div der Drop-Zone hinzu
                 assignedNamesContainer.appendChild(assignedName);
             }
 
+            // Entferne den Drag-Effekt
             role.classList.remove('dragover');
+
+            // Überprüfe, ob alle Namen zugeordnet wurden
             checkIfAllAssigned();
         }
     });
 
+
+    function generateAssignmentJSON() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const teamKey = urlParams.get('t');
+        const fromKey = urlParams.get('key');
+
+        // Alle assigned-names Container finden
+        const assignedNamesContainers = document.querySelectorAll('.assigned-names');
+
+        const assignments = Array.from(assignedNamesContainers).map(container => {
+            const roleKey = container.getAttribute('data-role-key');
+            const assignedMembers = Array.from(container.querySelectorAll('.assigned-name')).map(member => {
+                return {
+                    key: member.getAttribute('data-key'),
+                    name: member.textContent.trim() // Optional, falls du den Namen auch haben möchtest
+                };
+            });
+
+            return {
+                role_key: roleKey,
+                assigned_members: assignedMembers
+            };
+        });
+
+        // Das JSON-Objekt zusammenbauen
+        return {
+            team_key: teamKey,
+            from_key: fromKey,
+            assignments: assignments
+        };
+    }
+
     // Event-Listener für den Finish-Button zur Weiterleitung
-    finishButton.addEventListener('click', function() {
-        if (!finishButton.disabled) {
-            window.location.href = 'summary.html'; // Weiterleitung zur Launch-Seite
+    finishButton.addEventListener('click', async function() {
+        // Generiere das Assignment-JSON
+        const assignmentsJSON = generateAssignmentJSON();
+
+        try {
+            // Sende das JSON an create_assignments.php
+            const response = await fetch('create_assignments.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // JSON als Inhaltstyp festlegen
+                },
+                body: JSON.stringify(assignmentsJSON) // Das generierte JSON senden
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                // Weiterleitung zur summary.html nach erfolgreicher API-Anfrage
+                window.location.href = 'summary.html';
+            } else {
+                // Fehlerbehandlung bei Fehler im Server-Response
+                console.error('Fehler beim Erstellen der Assignments:', result.message);
+                alert('Es gab einen Fehler beim Speichern der Zuweisungen.');
+            }
+        } catch (error) {
+            // Fehlerbehandlung bei Netzwerkfehlern
+            console.error('Fehler bei der Anfrage:', error);
+            alert('Es gab einen Fehler bei der Anfrage.');
         }
     });
+
 </script>
 </body>
 </html>
